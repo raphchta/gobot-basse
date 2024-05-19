@@ -1,0 +1,95 @@
+[gd_scene load_steps=8 format=3 uid="uid://b53gbvpxf56g6"]
+
+[ext_resource type="Texture2D" uid="uid://2h3dpc24dso8" path="res://mape.png" id="1_5jkax"]
+[ext_resource type="PackedScene" uid="uid://v8pqcal6utqc" path="res://player.tscn" id="1_68cor"]
+[ext_resource type="Script" path="res://main.gd" id="1_iimis"]
+[ext_resource type="PackedScene" uid="uid://bjkdebe8yamlo" path="res://mob.tscn" id="4_necwg"]
+[ext_resource type="Script" path="res://HUD.gd" id="5_f48yj"]
+[ext_resource type="FontFile" uid="uid://bruixwfiyyjav" path="res://fonts/Xolonium-Regular.ttf" id="6_wn1lu"]
+
+[sub_resource type="Curve2D" id="Curve2D_81ya8"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 207, 333, 0, 0, 0, 0, 205, 483, 0, 0, 0, 0, 365, 484, 0, 0, 0, 0, 366, 333, 0, 0, 0, 0, 215, 332, 0, 0, 0, 0, 207, 333)
+}
+point_count = 6
+
+[node name="main" type="Node2D"]
+script = ExtResource("1_iimis")
+
+[node name="img back" type="TextureRect" parent="."]
+offset_top = -4.0
+offset_right = 1154.0
+offset_bottom = 644.0
+texture = ExtResource("1_5jkax")
+expand_mode = 1
+
+[node name="Player" parent="." instance=ExtResource("1_68cor")]
+position = Vector2(851, 432)
+rotation = 3.14159
+
+[node name="mure" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="mure"]
+polygon = PackedVector2Array(-1, 646, -108, 644, -105, -144, 1288, -120, 1318, 798, -108, 777, -115, 643, 1159, 643, 1154, -4, -1, -2)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="mure"]
+polygon = PackedVector2Array(835, 481, 833, 452, 790, 413, 889, 413, 883, 345, 914, 345, 913, 392, 973, 392, 1006, 338, 1004, 393, 983, 417, 964, 419, 935, 455, 872, 452, 872, 491, 929, 480, 970, 444, 983, 452, 983, 477, 1015, 507, 1021, 546, 1043, 567, 935, 576, 935, 646, 1156, 643, 1156, 0, 669, -3, 672, 56, 640, 90, 640, 136, 681, 175, 685, 243, 661, 259, 661, 480, 689, 501, 706, 504, 739, 468, 739, 450, 788, 450)
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_81ya8")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(207, 333)
+rotation = 1.58413
+
+[node name="mob" parent="Path2D/PathFollow2D" instance=ExtResource("4_necwg")]
+scale = Vector2(0.2, 0.2)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("5_f48yj")
+
+[node name="Message" type="Label" parent="HUD"]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -39.0
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("6_wn1lu")
+theme_override_font_sizes/font_size = 64
+text = "go to plays"
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="HUD"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -84.0
+offset_top = -145.0
+offset_right = 82.0
+offset_bottom = -59.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("6_wn1lu")
+theme_override_font_sizes/font_size = 64
+text = "start
+"
+
+[node name="ScoreLabel" type="Label" parent="HUD"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 78.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("6_wn1lu")
+theme_override_font_sizes/font_size = 64
+text = "100"
+horizontal_alignment = 1
+
+[connection signal="hit_p" from="Player" to="." method="_on_player_hit_p"]
+[connection signal="hit" from="Path2D/PathFollow2D/mob" to="." method="_on_mob_hit"]
+[connection signal="start_game" from="HUD" to="." method="_on_hud_start_game"]
+[connection signal="pressed" from="HUD/StartButton" to="HUD" method="_on_start_button_pressed"]

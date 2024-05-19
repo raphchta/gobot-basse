@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://b53gbvpxf56g6"]
+
+[ext_resource type="Texture2D" uid="uid://2h3dpc24dso8" path="res://mape.png" id="1_5jkax"]
+[ext_resource type="PackedScene" uid="uid://v8pqcal6utqc" path="res://player.tscn" id="1_68cor"]
+[ext_resource type="Script" path="res://PathFollow2D.gd" id="3_gs2wy"]
+[ext_resource type="PackedScene" uid="uid://dcatmsg46dix2" path="res://enémy.tscn" id="4_8b6ln"]
+
+[sub_resource type="Curve2D" id="Curve2D_81ya8"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 207, 333, 0, 0, 0, 0, 205, 483, 0, 0, 0, 0, 365, 484, 0, 0, 0, 0, 366, 333, 0, 0, 0, 0, 215, 332, 0, 0, 0, 0, 207, 333)
+}
+point_count = 6
+
+[node name="main" type="Node2D"]
+
+[node name="img back" type="TextureRect" parent="."]
+offset_left = -1.0
+offset_top = -4.0
+offset_right = 1153.0
+offset_bottom = 644.0
+texture = ExtResource("1_5jkax")
+expand_mode = 1
+
+[node name="Player" parent="." instance=ExtResource("1_68cor")]
+position = Vector2(865, 428)
+
+[node name="mure" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="mure"]
+polygon = PackedVector2Array(-1, 646, -108, 644, -105, -144, 1288, -120, 1318, 798, -108, 777, -115, 643, 1159, 643, 1154, -4, -1, -2)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="mure"]
+polygon = PackedVector2Array(835, 481, 833, 452, 790, 413, 889, 413, 883, 345, 914, 345, 913, 392, 973, 392, 1006, 338, 1004, 393, 983, 417, 964, 419, 935, 455, 872, 452, 871, 487, 929, 480, 970, 444, 983, 452, 983, 477, 1015, 507, 1021, 546, 1043, 567, 935, 576, 935, 646, 1156, 643, 1156, 0, 669, -3, 672, 56, 640, 90, 640, 136, 681, 175, 685, 243, 661, 259, 661, 480, 689, 501, 706, 504, 739, 468, 739, 450, 788, 450)
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_81ya8")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(207, 333)
+rotation = 1.58413
+script = ExtResource("3_gs2wy")
+
+[node name="enémy" parent="Path2D/PathFollow2D" instance=ExtResource("4_8b6ln")]
+scale = Vector2(0.1, 0.1)

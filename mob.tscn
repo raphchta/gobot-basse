@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://bjkdebe8yamlo"]
+
+[ext_resource type="Script" path="res://mob.gd" id="1_cgbj2"]
+[ext_resource type="Texture2D" uid="uid://da8dc71dvtfp4" path="res://enemySwimming_1.png" id="2_qee28"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uf1br"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_qee28")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jvj8r"]
+radius = 48.0
+height = 128.0
+
+[node name="mob" type="Area2D"]
+script = ExtResource("1_cgbj2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_uf1br")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_jvj8r")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
